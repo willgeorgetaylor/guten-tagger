@@ -1,24 +1,29 @@
 # Guten Tagger
 ## Introduction ##
-Guten Tagger is a simple 'error tagger' for German language exercises.
-
-Error tagging is the process of identifying, classifying and representing types of linguistic 'errors', or non-standard features, in natural and (often) non-natively authored texts. Guten Tagger is designed to tag errors in very short (1-20 words) written inputs by learners of the German language, by applying a 'generative' approach to the task. Thanks to the prescribed set of acceptable inputs in most online exercises, Guten Tagger successfully demonstrates that an exhaustive set of incorrect inputs can be found for each, and tagged with its grammatical properties.
+Guten Tagger is a very simple proof-of-concept algorithm, that predicts the forms (and grammatical rationale) of a set of erroneous responses, given a question and correct answer. It demonstrates that with short, gap-fill exercises (here, in German), this approach provides a fast, predictable and scaleable way of providing learner feedback.
 
 ## How it works ##
-For each question, Guten Tagger needs two pieces of data from you (as the course developer):
 
-* The question as phrased to the learner (e.g., 'Wie _____ von hier zur Schule?')
-* The correct answer (e.g., 'komme ich')
+```python
+>>>de = Deutsch()
+>>>answer = [verb.Verb("komme", de, "komm", person.Person.First, number.Number.Singular),
+          pronoun.Pronoun("ich", de, person.Person.First, number.Number.Singular, gender.Gender.Unexpressed)]
+>>>question = Question("Wie _ von hier zur Schule?", "How do I get to school?", answer)
+>>>print(question.flags)
+```
 
-To facilitate testing of Guten Tagger, an additional input of the entire english translation to show the tester as a prompt. This is not used at any stage.
+The results look like this:
+```python
+[
+(komme, [kommst, kommt, kommen, kommt, kommen]), # answer : [ errors... ]
+(ich, [du, er, sie, es, wir, ihr, sie])			 # answer : [ errors... ]
+]
+```
 
 ## The results ##
-The result of processing is a list of incorrect substitutions for each token/word in the input, each with its own grammatical annotations.
+The result is a list of possible incorrect answers for each token in the correct answer, each with its own grammatical annotations.
 
-These can be used as error identifiers during the validation process for exercises. A basic implementation of this could be a substring/containment check for each error identifier in the user's input.
-
-## Demo ##
-Live demo coming soon!
+In a production system, the erroneous responses can be anticipated and could even be linked to helpful feedback, using the grammatical link to determine the type of L1 interference. In multi-word gaps, such as the example above (`komme ich`), it should be possible to anticipate multiple responses (and therefore error types) from the product of each token slot, using `itertools.product`.
 
 ## Notes ##
-* At present, the correct answer is marked up with grammatical features at design time. However, this will soon be made automatic as part of the pipeline, making use of the Stanford PoS tagger (https://nlp.stanford.edu/software/tagger.shtml).
+* This is only for demonstration purposes, and not intended to be used. For use in a production language-learning system, you would want to annotate linguistic features automatically, instead of manually.
