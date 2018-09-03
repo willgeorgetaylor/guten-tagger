@@ -1,6 +1,6 @@
 # Guten Tagger
 ## Introduction ##
-Guten Tagger is a rapidly prototyped proof on concept, that predicts the forms (and grammatical rationale) of a set of erroneous responses, given a question and correct answer.
+Guten Tagger is a rapidly prototyped proof of concept, that predicts the forms (and grammatical rationale) of a set of erroneous responses, given a question and correct answer.
 
 It demonstrates that with short, gap-fill exercises (here, in German), this approach provides a fast, predictable and scaleable way of providing learner feedback.
 
